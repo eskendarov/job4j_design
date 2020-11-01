@@ -16,16 +16,22 @@ public class SimpleArray<T> implements Iterable<T> {
         pos = arr.length;
     }
 
+    @SuppressWarnings("unchecked")
     public SimpleArray() {
         arr = (T[]) new Object[capacity];
     }
 
-    public void add(T element) {
+    public void checkCapacity() {
         if (pos == arr.length) {
             capacity = (capacity * 3) / 2 + 1;
             arr = Arrays.copyOf(arr, capacity);
         }
+    }
+
+    public int add(T element) {
+        checkCapacity();
         arr[pos++] = element;
+        return size();
     }
 
     public int size() {
@@ -33,32 +39,25 @@ public class SimpleArray<T> implements Iterable<T> {
     }
 
     public boolean set(int index, T element) {
-        try {
-            arr[Objects.checkIndex(index, size())] = element;
-            return true;
-        } catch (IndexOutOfBoundsException e) {
-            e.printStackTrace();
-            return false;
-        }
+        Objects.checkIndex(index, size());
+        arr[index] = element;
+        return true;
     }
 
-    public boolean remove(int index) {
+    @SuppressWarnings("unchecked")
+    public int remove(int index) {
+        Objects.checkIndex(index, size());
         var temp = (T[]) new Object[capacity];
-        try {
-            int indexTemp = Objects.checkIndex(index, size());
-            System.arraycopy(arr, 0, temp, 0, indexTemp);
-            System.arraycopy(arr, indexTemp + 1, temp, indexTemp, arr.length - 1 - indexTemp);
-            arr = temp;
-            pos--;
-            return true;
-        } catch (IndexOutOfBoundsException e) {
-            e.printStackTrace();
-            return false;
-        }
+        System.arraycopy(arr, 0, temp, 0, index);
+        System.arraycopy(arr, index + 1, temp, index, arr.length - 1 - index);
+        arr = temp;
+        pos--;
+        return size();
     }
 
     public T get(int index) {
-        return arr[Objects.checkIndex(index, size())];
+        Objects.checkIndex(index, size());
+        return arr[index];
     }
 
     @Override
@@ -68,7 +67,7 @@ public class SimpleArray<T> implements Iterable<T> {
 
             @Override
             public boolean hasNext() {
-                return point < arr.length && null != arr[point];
+                return point < pos;
             }
 
             @Override
@@ -81,6 +80,7 @@ public class SimpleArray<T> implements Iterable<T> {
         };
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public boolean equals(Object o) {
         if (this == o) {
