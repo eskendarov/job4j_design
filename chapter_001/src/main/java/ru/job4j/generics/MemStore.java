@@ -1,35 +1,29 @@
 package ru.job4j.generics;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public final class MemStore<T extends Base> implements Store<T> {
 
-    private final List<T> mem = new ArrayList<>();
+    private final Map<String, T> mem = new HashMap<>();
 
     @Override
     public void add(T model) {
-        mem.add(model);
+        mem.putIfAbsent(model.getId(), model);
     }
 
     @Override
     public boolean replace(String id, T model) {
-        return Collections.replaceAll(mem, findById(id), model);
+        return delete(id) && mem.put(model.getId(), model) == model;
     }
 
     @Override
     public boolean delete(String id) {
-        return mem.remove(findById(id));
+        return null != mem.remove(id);
     }
 
     @Override
     public T findById(String id) {
-        for (T el : mem) {
-            if (id.equals(el.getId())) {
-                return el;
-            }
-        }
-        return null;
+        return mem.get(id);
     }
 }
