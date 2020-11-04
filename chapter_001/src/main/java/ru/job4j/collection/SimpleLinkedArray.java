@@ -8,8 +8,6 @@ public class SimpleLinkedArray<E> implements Iterable<E> {
     private int size = 0;
     private Node<E> first;
     private Node<E> last;
-    @SuppressWarnings("unchecked")
-    private Node<E>[] container = new Node[10];
 
     private static class Node<E> {
 
@@ -25,13 +23,6 @@ public class SimpleLinkedArray<E> implements Iterable<E> {
         }
     }
 
-    private void growIf() {
-        if (size == container.length) {
-            final int newCapacity = (container.length * 3) / 2 + 1;
-            container = Arrays.copyOf(container, newCapacity);
-        }
-    }
-
     public void add(E value) {
         final Node<E> l = last;
         final Node<E> newNode = new Node<>(l, value, null);
@@ -41,8 +32,7 @@ public class SimpleLinkedArray<E> implements Iterable<E> {
         } else {
             l.next = newNode;
         }
-        growIf();
-        container[size++] = newNode;
+        size++;
         modCount++;
     }
 
@@ -71,14 +61,14 @@ public class SimpleLinkedArray<E> implements Iterable<E> {
     public Iterator<E> iterator() {
         return new Iterator<>() {
             final int expectedModCount = modCount;
-            int position = 0;
+            Node<E> position = first;
 
             @Override
             public boolean hasNext() {
                 if (expectedModCount != modCount) {
                     throw new ConcurrentModificationException();
                 }
-                return position < size;
+                return null != position;
             }
 
             @Override
@@ -86,7 +76,9 @@ public class SimpleLinkedArray<E> implements Iterable<E> {
                 if (!hasNext()) {
                     throw new NoSuchElementException();
                 }
-                return container[position++].item;
+                final E value = position.item;
+                position = position.next;
+                return value;
             }
         };
     }
