@@ -5,28 +5,39 @@ import java.util.NoSuchElementException;
 
 public class ForwardLinked<T> implements Iterable<T> {
 
-    private Node<T> head;
+    private Node<T> first;
+    private Node<T> last;
 
     public void add(T value) {
-        final Node<T> node = new Node<>(value, null);
-        if (head == null) {
-            head = node;
-            return;
+        final Node<T> oldLast = last;
+        final Node<T> newNode = new Node<>(oldLast, value, null);
+        last = newNode;
+        if (first == null) {
+            first = newNode;
+        } else if (oldLast != null) {
+            oldLast.next = last;
         }
-        Node<T> tail = head;
-        while (tail.next != null) {
-            tail = tail.next;
-        }
-        tail.next = node;
     }
 
     public T deleteFirst() {
-        if (null != head) {
-            final T oldValue = head.value;
-            final Node<T> newHead = head.next;
-            head.next = null;
-            head = newHead;
-            return oldValue;
+        if (first != null) {
+            final T value = first.value;
+            final Node<T> newFirst = first.next;
+            first.next = null;
+            first = newFirst;
+            return value;
+        } else {
+            throw new NoSuchElementException();
+        }
+    }
+
+    public T deleteLast() {
+        if (last != null) {
+            final T value = last.value;
+            final Node<T> newLast = last.prev;
+            last.prev = null;
+            last = newLast;
+            return value;
         } else {
             throw new NoSuchElementException();
         }
@@ -35,7 +46,7 @@ public class ForwardLinked<T> implements Iterable<T> {
     @Override
     public Iterator<T> iterator() {
         return new Iterator<>() {
-            Node<T> node = head;
+            Node<T> node = first;
 
             @Override
             public boolean hasNext() {
@@ -56,12 +67,14 @@ public class ForwardLinked<T> implements Iterable<T> {
 
     private static class Node<T> {
 
-        T value;
+        final T value;
         Node<T> next;
+        Node<T> prev;
 
-        public Node(T value, Node<T> next) {
+        Node(Node<T> prev, T value, Node<T> next) {
             this.value = value;
             this.next = next;
+            this.prev = prev;
         }
     }
 }
