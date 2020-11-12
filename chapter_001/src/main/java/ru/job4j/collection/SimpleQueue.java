@@ -9,15 +9,22 @@ public class SimpleQueue<T> {
     private final SimpleStack<T> out = new SimpleStack<>();
 
     public T poll() {
-        for (int i = 0; i < size; i++) {
-            out.push(in.pop());
-        }
-        T first;
-        if ((first = out.pop()) != null) {
-            size--;
-            for (int i = 0; i < size; i++) {
+        T first = null;
+        boolean changeSize = false;
+        for (int counter = 0; counter++ < size; ) {
+            if (changeSize) {
                 in.push(out.pop());
+            } else {
+                out.push(in.pop());
+                if (counter == size) {
+                    first = out.pop();
+                    size--;
+                    changeSize = true;
+                    counter = 0;
+                }
             }
+        }
+        if (first != null) {
             return first;
         } else {
             throw new NoSuchElementException();
