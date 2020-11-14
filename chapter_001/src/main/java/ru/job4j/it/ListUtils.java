@@ -56,7 +56,7 @@ public class ListUtils {
         while (srcIt.hasNext()) {
             final T srcElem = srcIt.next();
             for (T el : removeElems) {
-                if (srcElem.equals(el)) {
+                if (Objects.equals(srcElem,el)) {
                     srcIt.remove();
                 }
             }
