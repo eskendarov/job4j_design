@@ -11,11 +11,11 @@ import static org.junit.Assert.assertThat;
 public class SimpleSetTest {
 
     @Test
-    public void add() {
+    public void contains() {
         final SimpleSet<String> set = new SimpleSet<>();
         set.add("Java");
         set.add("Oracle");
-        assertFalse(set.add("Oracle"));
+        assertFalse(set.contains("AliExpress"));
     }
 
     @Test
