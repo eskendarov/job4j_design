@@ -117,7 +117,7 @@ public class SimpleArray<T> implements Iterable<T> {
         result.append('[');
         for (;;) {
             result.append(this.iterator().next());
-            if (!this.iterator().hasNext()){
+            if (!this.iterator().hasNext()) {
                 return result.append(']').toString();
             }
             result.append(',').append(' ');
