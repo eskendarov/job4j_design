@@ -50,7 +50,7 @@ public class ListUtilsTest {
     @Test
     public void removeAll() {
         final List<Integer> source
-                = new ArrayList<>(Arrays.asList(2, 8, 9, 9,5, 6, 3));
+                = new ArrayList<>(Arrays.asList(2, 8, 9, 9, 5, 6, 3));
         final List<Integer> list
                 = new ArrayList<>(Arrays.asList(8, 6, 9));
         ListUtils.removeAll(source, list);

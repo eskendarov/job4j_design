@@ -110,14 +110,16 @@ public class SimpleArray<T> implements Iterable<T> {
 
     @Override
     public String toString() {
-        if (!this.iterator().hasNext())
+        if (!this.iterator().hasNext()) {
             return "[]";
+        }
         var result = new StringBuilder();
         result.append('[');
-        for (; ; ) {
+        for (;;) {
             result.append(this.iterator().next());
-            if (!this.iterator().hasNext())
+            if (!this.iterator().hasNext()){
                 return result.append(']').toString();
+            }
             result.append(',').append(' ');
         }
     }

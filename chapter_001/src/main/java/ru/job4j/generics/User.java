@@ -15,4 +15,9 @@ public class User extends Base {
                 && obj.getClass() == User.class
                 && getId().equals(((User) obj).getId());
     }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 }
