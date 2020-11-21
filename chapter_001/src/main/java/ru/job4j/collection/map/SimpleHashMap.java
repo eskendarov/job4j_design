@@ -1,38 +1,61 @@
 package ru.job4j.collection.map;
 
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
-public class SimpleHashMap<K, V> implements Iterable<SimpleHashMap.EntrySet<K, V>> {
+public class SimpleHashMap<K, V>
+        implements Iterable<SimpleHashMap.EntrySet<K, V>> {
 
-    private final int capacity = 16;
-    @SuppressWarnings("unchecked")
-    private EntrySet<K, V>[] tab = new EntrySet[capacity];
+    private int capacity;
+    private static final float LOAD_FACTOR = 0.75f;
+    private int threshold;
+    private EntrySet<K, V>[] tab;
     private int size = 0;
+
+    @SuppressWarnings("unchecked")
+    public SimpleHashMap() {
+        capacity = 16;
+        threshold = (int) (capacity * LOAD_FACTOR);
+        tab = new EntrySet[capacity];
+    }
 
     private int hash(K key) {
         int h;
-        return (key == null) ? 0 : (h = key.hashCode()) ^ (h >>> 16);
+        return key == null ? 0 : (h = key.hashCode()) ^ (h >>> 16);
     }
 
-    private int indexFor(K key) {
-        return (capacity - 1) & hash(key);
+    private static int indexFor(int hash, int length) {
+        return hash & (length - 1);
     }
 
-    private void grow() {
-        final int newCapacity = (tab.length * 3) / 2 + 1;
-        tab = Arrays.copyOf(tab, newCapacity);
+    void resize(int newCapacity) {
+        @SuppressWarnings("unchecked")
+        final EntrySet<K, V>[] newTable = new EntrySet[newCapacity];
+        tab = transfer(newTable);
+        threshold = (int) (newCapacity * LOAD_FACTOR);
+    }
+
+    private EntrySet<K, V>[] transfer(EntrySet<K, V>[] newTable) {
+        final int oldCapacity = newTable.length / 2;
+        for (int i = 0; i < oldCapacity; i++) {
+            EntrySet<K, V> e;
+            if ((e = tab[i]) != null) {
+                tab[i] = null;
+                newTable[indexFor(e.hash, newTable.length)] = e;
+            }
+        }
+        return newTable;
     }
 
     public boolean insert(K key, V value) {
-        if (size == tab.length) {
-            grow();
+        if (size == threshold) {
+            resize(capacity *= 2);
         }
-        final int index = indexFor(key);
+        final int hash = hash(key);
+        final int index = indexFor(hash, tab.length);
         if (tab[index] == null) {
-            tab[index] = new EntrySet<>(hash(key), key, value);
+            tab[index] = new EntrySet<>(hash, key, value);
             size++;
             return true;
         }
@@ -40,7 +63,7 @@ public class SimpleHashMap<K, V> implements Iterable<SimpleHashMap.EntrySet<K, V
     }
 
     public V get(K key) {
-        final EntrySet<K, V> el = tab[indexFor(key)];
+        final EntrySet<K, V> el = tab[indexFor(hash(key), tab.length)];
         if (el != null && el.hash == hash(key)) {
             return el.value;
         } else {
@@ -50,7 +73,7 @@ public class SimpleHashMap<K, V> implements Iterable<SimpleHashMap.EntrySet<K, V
 
     public V delete(K key) {
         final EntrySet<K, V> old;
-        final int index = indexFor(key);
+        final int index = indexFor(hash(key), tab.length);
         if ((old = tab[index]) != null) {
             tab[index] = null;
             size--;
