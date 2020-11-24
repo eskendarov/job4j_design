@@ -1,6 +1,7 @@
 package ru.job4j.collection;
 
 import org.junit.Test;
+import ru.job4j.collection.queue.SimpleQueue;
 
 import java.util.NoSuchElementException;
 

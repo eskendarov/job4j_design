@@ -1,6 +1,7 @@
 package ru.job4j.collection;
 
 import org.junit.Test;
+import ru.job4j.collection.list.SimpleStack;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;

@@ -1,4 +1,6 @@
-package ru.job4j.collection;
+package ru.job4j.collection.queue;
+
+import ru.job4j.collection.list.SimpleStack;
 
 public class SimpleQueue<T> {
 

@@ -1,6 +1,7 @@
 package ru.job4j.collection;
 
 import org.junit.Test;
+import ru.job4j.collection.set.SimpleSet;
 
 import java.util.Iterator;
 

@@ -1,4 +1,6 @@
-package ru.job4j.collection;
+package ru.job4j.collection.set;
+
+import ru.job4j.collection.list.SimpleArray;
 
 import java.util.Iterator;
 import java.util.Objects;
