@@ -21,8 +21,11 @@ public class SimpleHashMap<K, V>
     }
 
     private int hash(K key) {
-        int h;
-        return key == null ? 0 : (h = key.hashCode()) ^ (h >>> 16);
+        if (key == null) {
+            return 0;
+        }
+        int h = key.hashCode();
+        return h ^ (h >>> 16);
     }
 
     private static int indexFor(int hash, int length) {
@@ -39,8 +42,8 @@ public class SimpleHashMap<K, V>
     private EntrySet<K, V>[] transfer(EntrySet<K, V>[] newTable) {
         final int oldCapacity = newTable.length / 2;
         for (int i = 0; i < oldCapacity; i++) {
-            EntrySet<K, V> e;
-            if ((e = tab[i]) != null) {
+            final EntrySet<K, V> e = tab[i];
+            if (e != null) {
                 tab[i] = null;
                 newTable[indexFor(e.hash, newTable.length)] = e;
             }
@@ -50,7 +53,8 @@ public class SimpleHashMap<K, V>
 
     public boolean insert(K key, V value) {
         if (size == threshold) {
-            resize(capacity *= 2);
+            capacity *= 2;
+            resize(capacity);
         }
         final int hash = hash(key);
         final int index = indexFor(hash, tab.length);
@@ -72,9 +76,9 @@ public class SimpleHashMap<K, V>
     }
 
     public V delete(K key) {
-        final EntrySet<K, V> old;
         final int index = indexFor(hash(key), tab.length);
-        if ((old = tab[index]) != null) {
+        final EntrySet<K, V> old = tab[index];
+        if (old != null) {
             tab[index] = null;
             size--;
             return old.value;
