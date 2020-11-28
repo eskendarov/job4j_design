@@ -21,7 +21,7 @@ public class Analyze {
             }
         }
         int deleted = previous.size() - common;
-        final int added = current.size() - deleted;
+        final int added = current.size() - common - changed;
         return new Info(added, changed, deleted);
     }
 
