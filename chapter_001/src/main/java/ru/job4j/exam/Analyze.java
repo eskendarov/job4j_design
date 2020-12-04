@@ -1,27 +1,30 @@
 package ru.job4j.exam;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
 public class Analyze {
 
     public Info diff(List<User> previous, List<User> current) {
+        final HashMap<Integer, User> mapCurrent = new HashMap<>(current.size());
+        current.forEach(user -> mapCurrent.put(user.id, user));
+        int added = 0;
+        int deleted = previous.size();
         int changed = 0;
-        int common = 0;
         for (User prev : previous) {
-            for (User curr : current) {
-                if (prev.equals(curr)) {
-                    common++;
-                } else {
-                    if (prev.id == curr.id) {
-                        changed++;
-                    }
-
+            final User user = mapCurrent.get(prev.id);
+            if (user == null) {
+                added++;
+            } else {
+                if (user.equals(prev)) {
+                    deleted--;
+                } else if (prev.id == user.id) {
+                    changed++;
+                    added++;
                 }
             }
         }
-        int deleted = previous.size() - common;
-        final int added = current.size() - common - changed;
         return new Info(added, changed, deleted);
     }
 
