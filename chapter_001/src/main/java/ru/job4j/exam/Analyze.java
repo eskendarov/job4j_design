@@ -19,7 +19,7 @@ public class Analyze {
             } else {
                 if (user.equals(prev)) {
                     deleted--;
-                } else if (prev.id == user.id) {
+                } else {
                     changed++;
                     added++;
                 }
