@@ -12,22 +12,45 @@ import static org.hamcrest.CoreMatchers.is;
 public class AnalyzeTest {
 
     @Test
-    public void test() {
-        List<User> previous = List.of(
+    public void whenAddTwo() {
+        final List<User> previous = List.of(
+                new User(1, "Jimmy"),
+                new User(2, "Adam"),
+                new User(3, "Olesya"));
+        final List<User> current = List.of(
                 new User(1, "Jimmy"),
                 new User(2, "Adam"),
                 new User(3, "Olesya"),
-                new User(4, "Sara")
-        );
-        List<User> current = List.of(
-                new User(1, "Robert"),
-                new User(2, "Lev"),
-                new User(5, "Lisa"),
-                new User(6, "Oleg"),
                 new User(7, "Enver"),
-                new User(4, "Sara")
-        );
-        Info info = new Analyze().diff(previous, current);
-        Assert.assertThat(info, is(new Info(3, 2, 3)));
+                new User(4, "Sara"));
+        final Info info = new Analyze().diff(previous, current);
+        Assert.assertThat(info, is(new Info(2, 0, 0)));
+    }
+
+    @Test
+    public void whenChangeAll() {
+        final List<User> previous = List.of(
+                new User(1, "Jimmy"),
+                new User(2, "Adam"),
+                new User(3, "Olesya"));
+        final List<User> current = List.of(
+                new User(1, "Enver"),
+                new User(2, "Eric"),
+                new User(3, "Sonya"));
+        final Info info = new Analyze().diff(previous, current);
+        Assert.assertThat(info, is(new Info(0, 3, 0)));
+    }
+
+    @Test
+    public void whenDelAllAndAddTwo() {
+        final List<User> previous = List.of(
+                new User(1, "Jimmy"),
+                new User(2, "Adam"),
+                new User(4, "Sara"));
+        final List<User> current = List.of(
+                new User(5, "Robert"),
+                new User(7, "Lev"));
+        final Info info = new Analyze().diff(previous, current);
+        Assert.assertThat(info, is(new Info(2, 0, 3)));
     }
 }

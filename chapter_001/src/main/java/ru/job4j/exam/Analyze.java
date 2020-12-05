@@ -9,20 +9,18 @@ public class Analyze {
     public Info diff(List<User> previous, List<User> current) {
         final HashMap<Integer, User> mapCurrent = new HashMap<>(current.size());
         current.forEach(user -> mapCurrent.put(user.id, user));
-        int added = 0;
-        int deleted = previous.size();
+        int added = current.size();
+        int deleted = 0;
         int changed = 0;
         for (User prev : previous) {
             final User user = mapCurrent.get(prev.id);
-            if (user == null) {
-                added++;
-            } else {
-                if (user.equals(prev)) {
-                    deleted--;
-                } else {
+            if (user != null) {
+                added--;
+                if (!prev.equals(user)) {
                     changed++;
-                    added++;
                 }
+            } else {
+                deleted++;
             }
         }
         return new Info(added, changed, deleted);
