@@ -18,8 +18,8 @@ public class Config {
     public void load() {
         try (BufferedReader read = new BufferedReader(new FileReader(path))) {
             read.lines()
+                    .filter(line -> !line.startsWith("#") && !line.isBlank())
                     .map(s -> s.split("="))
-                    .filter(keyVal -> keyVal.length == 2)
                     .forEach(keyVal -> values.put(keyVal[0], keyVal[1]));
         } catch (IOException e) {
             e.printStackTrace();
