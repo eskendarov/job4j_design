@@ -10,9 +10,12 @@ import java.util.List;
 public class Search {
 
     public static void main(String[] args) throws IOException {
-        final Path start = Paths.get(".");
+        final Path start = Paths.get(args[0]);
+        if (args.length != 2 || !start.toFile().isDirectory()) {
+            throw new IllegalArgumentException("Invalid root folder!");
+        }
+        search(start, args[1]).forEach(System.out::println);
         final Path root = Paths.get("C:\\Users\\EEA\\Downloads");
-        search(start, "java").forEach(System.out::println);
         searchDuplicates(root, new SearchDuplicates()).forEach(System.out::println);
     }
 
