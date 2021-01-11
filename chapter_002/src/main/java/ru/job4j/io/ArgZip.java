@@ -1,6 +1,5 @@
 package ru.job4j.io;
 
-import java.nio.file.Path;
 import java.util.HashMap;
 
 public class ArgZip {
