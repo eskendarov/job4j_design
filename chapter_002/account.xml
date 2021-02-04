@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<account connected="true" id="23" user="Kot">
+    <contact zipCode="55" phone="734552"/>
+    <tokens>
+        <token>cbb43</token>
+        <token>f34f3</token>
+        <token>23d4</token>
+        <token>2d23</token>
+        <token>d3d45</token>
+    </tokens>
+</account>
