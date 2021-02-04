@@ -1,0 +1,17 @@
+<?xml version="1.1" encoding="UTF-8" ?>
+<account>
+    <connected>true</connected>
+    <id>23</id>
+    <user>Kot</user>
+    <contact>
+        <zipCode>55</zipCode>
+        <phone>734552</phone>
+    </contact>
+    <tokens>
+        <token>0Ne^x5</token>
+        <token>9]Egz;</token>
+        <token>)U9|Io</token>
+        <token>E0$}xK</token>
+        <token>}2lUzL</token>
+    </tokens>
+</account>
