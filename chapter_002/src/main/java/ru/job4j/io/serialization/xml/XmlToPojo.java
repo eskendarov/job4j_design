@@ -1,4 +1,7 @@
-package ru.job4j.io.serialization;
+package ru.job4j.io.serialization.xml;
+
+import ru.job4j.io.serialization.Account;
+import ru.job4j.io.serialization.Contact;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;

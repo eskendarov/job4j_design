@@ -31,6 +31,26 @@ public class Account {
         this.tokens = tokens;
     }
 
+    public boolean isConnected() {
+        return connected;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getUser() {
+        return user;
+    }
+
+    public Contact getContact() {
+        return contact;
+    }
+
+    public String[] getTokens() {
+        return tokens;
+    }
+
     @Override
     public String toString() {
         return "Account{"

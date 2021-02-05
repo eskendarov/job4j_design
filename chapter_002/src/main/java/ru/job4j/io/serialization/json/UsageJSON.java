@@ -1,7 +1,9 @@
-package ru.job4j.io.serialization;
+package ru.job4j.io.serialization.json;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import ru.job4j.io.serialization.Account;
+import ru.job4j.io.serialization.Contact;
 
 public class UsageJSON {
 
