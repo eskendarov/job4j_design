@@ -1,10 +1,19 @@
 package ru.job4j.exam;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Set;
 
-public class MailMerger {
+public final class MailMerger {
 
-    public static Map<String, Set<String>> merge(Map<String, Set<String>> users) {
+    private MailMerger() {
+    }
+
+    public static Map<String, Set<String>>
+    merge(Map<String, Set<String>> users) {
         final Map<String, String> tempMap = new HashMap<>();
         users.forEach((name, mails) -> {
             final StringBuilder user = new StringBuilder(name);

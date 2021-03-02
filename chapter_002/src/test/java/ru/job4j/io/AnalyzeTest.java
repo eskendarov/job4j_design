@@ -5,7 +5,11 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -34,7 +38,6 @@ public class AnalyzeTest {
         final List<String> targetList;
         try (BufferedReader read = new BufferedReader(new FileReader(target))) {
             targetList = read.lines().collect(Collectors.toList());
-
         }
         Assert.assertThat(targetList, is(
                 Arrays.asList("10:57:01;10:59:01;", "11:01:02;11:02:02;")

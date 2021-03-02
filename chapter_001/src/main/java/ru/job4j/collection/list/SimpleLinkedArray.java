@@ -1,6 +1,9 @@
 package ru.job4j.collection.list;
 
-import java.util.*;
+import java.util.ConcurrentModificationException;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+import java.util.Objects;
 
 public class SimpleLinkedArray<E> implements Iterable<E> {
 
@@ -11,9 +14,9 @@ public class SimpleLinkedArray<E> implements Iterable<E> {
 
     private static class Node<E> {
 
-        E item;
-        Node<E> next;
-        Node<E> prev;
+        private E item;
+        private Node<E> next;
+        private Node<E> prev;
 
         Node(Node<E> prev, E element, Node<E> next) {
             this.item = element;
@@ -60,8 +63,8 @@ public class SimpleLinkedArray<E> implements Iterable<E> {
     @Override
     public Iterator<E> iterator() {
         return new Iterator<>() {
-            final int expectedModCount = modCount;
-            Node<E> position = first;
+            private final int expectedModCount = modCount;
+            private Node<E> position = first;
 
             @Override
             public boolean hasNext() {

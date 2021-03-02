@@ -19,7 +19,8 @@ public class MailMergerTest {
     public void test() throws FileNotFoundException {
         final Map<String, Set<String>> users = new Gson().fromJson(
                 new FileReader("users.json"),
-                new TypeToken<LinkedHashMap<String ,Set<String>>>() {}.getType()
+                new TypeToken<LinkedHashMap<String, Set<String>>>() {
+                }.getType()
         );
         final var result = MailMerger.merge(users);
         final var expected = Map.of(

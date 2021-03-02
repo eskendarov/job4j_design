@@ -1,6 +1,10 @@
 package ru.job4j.collection.list;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.ConcurrentModificationException;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+import java.util.Objects;
 
 public class SimpleArray<T> implements Iterable<T> {
 
@@ -36,8 +40,8 @@ public class SimpleArray<T> implements Iterable<T> {
     @Override
     public Iterator<T> iterator() {
         return new Iterator<>() {
-            final int expectedModCount = modCount;
-            int position = 0;
+            private final int expectedModCount = modCount;
+            private int position = 0;
 
             @Override
             public boolean hasNext() {

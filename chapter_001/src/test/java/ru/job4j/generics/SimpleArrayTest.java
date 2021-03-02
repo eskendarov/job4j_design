@@ -10,7 +10,7 @@ import static org.hamcrest.core.Is.is;
 
 public class SimpleArrayTest {
 
-    SimpleArray<Integer> srcArray;
+    private SimpleArray<Integer> srcArray;
 
     @Test
     public void whenAddElement() {
@@ -28,7 +28,8 @@ public class SimpleArrayTest {
     public void whenSetElement() {
         srcArray = new SimpleArray<>(new Integer[]{66, 33, 22, 45});
         srcArray.set(2, 999);
-        assertThat(srcArray, is(new SimpleArray<>(new Integer[]{66, 33, 999, 45})));
+        assertThat(srcArray, is(new SimpleArray<>(
+                new Integer[]{66, 33, 999, 45})));
     }
 
     @Test

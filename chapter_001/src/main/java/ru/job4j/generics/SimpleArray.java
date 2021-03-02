@@ -63,7 +63,7 @@ public class SimpleArray<T> implements Iterable<T> {
     @Override
     public Iterator<T> iterator() {
         return new Iterator<>() {
-            int point = 0;
+            private int point = 0;
 
             @Override
             public boolean hasNext() {

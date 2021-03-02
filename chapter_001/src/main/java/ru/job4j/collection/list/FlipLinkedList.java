@@ -39,7 +39,7 @@ public class FlipLinkedList<T> implements Iterable<T> {
     @Override
     public Iterator<T> iterator() {
         return new Iterator<>() {
-            Node<T> node = head;
+            private Node<T> node = head;
 
             @Override
             public boolean hasNext() {
@@ -60,10 +60,10 @@ public class FlipLinkedList<T> implements Iterable<T> {
 
     private static class Node<T> {
 
-        final T value;
-        Node<T> next;
+        private final T value;
+        private Node<T> next;
 
-        public Node(T value, Node<T> next) {
+        Node(T value, Node<T> next) {
             this.value = value;
             this.next = next;
         }

@@ -3,13 +3,20 @@ package ru.job4j.io.serialization;
 import com.sun.xml.txw2.annotation.XmlElement;
 
 import javax.xml.bind.annotation.XmlAttribute;
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.nio.file.Files;
 import java.util.Objects;
 
 @XmlElement(value = "contact")
 public class Contact implements Serializable {
 
+    @java.io.Serial
     private static final long serialVersionUID = 237L;
     @XmlAttribute
     private int zipCode;

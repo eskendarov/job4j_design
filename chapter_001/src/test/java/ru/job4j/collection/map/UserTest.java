@@ -14,8 +14,10 @@ public class UserTest {
 
     @Test
     public void whenOverrideEqualsAndHashCode() {
-        final User user1 = new User("Neo", new GregorianCalendar(1989, Calendar.APRIL, 22), 2);
-        final User user2 = new User("Tom", new GregorianCalendar(2000, Calendar.MAY, 22), 1);
+        final User user1 = new User("Neo", new GregorianCalendar(1989,
+                Calendar.APRIL, 22), 2);
+        final User user2 = new User("Tom", new GregorianCalendar(2000,
+                Calendar.MAY, 22), 1);
         final User user3 = null;
         final Map<User, Object> mapUser = new HashMap<>();
         mapUser.put(user1, "User_1");

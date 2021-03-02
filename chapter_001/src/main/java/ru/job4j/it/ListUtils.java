@@ -5,9 +5,12 @@ import java.util.ListIterator;
 import java.util.Objects;
 import java.util.function.Predicate;
 
-public class ListUtils {
+final class ListUtils {
 
-    public static <T> void addBefore(List<T> input, int index, T value) {
+    private ListUtils() {
+    }
+
+    static <T> void addBefore(List<T> input, int index, T value) {
         Objects.checkIndex(index, input.size());
         final ListIterator<T> i = input.listIterator();
         while (i.hasNext()) {
@@ -41,7 +44,8 @@ public class ListUtils {
         return input;
     }
 
-    public static <T> List<T> replaceIf(List<T> input, Predicate<T> filter, T value) {
+    public static <T> List<T>
+    replaceIf(List<T> input, Predicate<T> filter, T value) {
         final ListIterator<T> i = input.listIterator();
         while (i.hasNext()) {
             if (filter.test(i.next())) {

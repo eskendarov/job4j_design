@@ -3,7 +3,9 @@ package ru.job4j.collection.map;
 import java.util.Calendar;
 import java.util.Objects;
 
-import static java.util.Calendar.*;
+import static java.util.Calendar.DAY_OF_MONTH;
+import static java.util.Calendar.MONTH;
+import static java.util.Calendar.YEAR;
 
 public class User {
 

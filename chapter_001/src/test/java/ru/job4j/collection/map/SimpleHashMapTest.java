@@ -12,9 +12,11 @@ import static org.junit.Assert.assertTrue;
 
 public class SimpleHashMapTest {
 
-    final SimpleHashMap<User, String> map = new SimpleHashMap<>();
-    final User user1 = new User("Neo", new GregorianCalendar(1989, Calendar.APRIL, 22), 2);
-    final User user2 = new User("Robert", new GregorianCalendar(1989, Calendar.APRIL, 22), 2);
+    private final SimpleHashMap<User, String> map = new SimpleHashMap<>();
+    private final User user1 = new User("Neo", new GregorianCalendar(1989,
+            Calendar.APRIL, 22), 2);
+    private final User user2 = new User("Robert", new GregorianCalendar(1989,
+            Calendar.APRIL, 22), 2);
 
     @Test
     public void insert() {

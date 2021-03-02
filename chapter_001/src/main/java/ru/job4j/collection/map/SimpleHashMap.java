@@ -90,7 +90,7 @@ public class SimpleHashMap<K, V>
     @Override
     public Iterator<EntrySet<K, V>> iterator() {
         return new Iterator<>() {
-            int pos = 0;
+            private int pos = 0;
 
             @Override
             public boolean hasNext() {
