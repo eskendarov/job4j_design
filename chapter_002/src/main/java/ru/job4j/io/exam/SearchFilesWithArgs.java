@@ -1,5 +1,7 @@
 package ru.job4j.io.exam;
 
+import java.awt.*;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -7,6 +9,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -28,7 +32,7 @@ public class SearchFilesWithArgs {
     private static Path ROOT;
     private static String EXPRESSION;
     private static String SEARCH_TYPE;
-    private static String OUTPUT;
+    private static File OUTPUT_FILE;
     private final static String MESSAGE = String.format(
             " Please input valid args, for example: %s (%s)",
             "-d=c:\\-n=*.txt -t=mask -o=log.txt",
@@ -45,7 +49,7 @@ public class SearchFilesWithArgs {
             ROOT = Paths.get(map.get("-d"));
             EXPRESSION = map.get("-n");
             SEARCH_TYPE = map.get("-t");
-            OUTPUT = map.get("-o");
+            OUTPUT_FILE = new File(map.get("-o"));
             return true;
         }
         return false;
@@ -55,7 +59,23 @@ public class SearchFilesWithArgs {
         if (!Files.exists(ROOT)) {
             throwException(ROOT + " - Invalid search directory.");
         }
-        final FileVisitor visitor = new FileVisitor(SEARCH_TYPE, EXPRESSION);
+        final Predicate<Path> validate = path -> {
+            final Predicate<String> validType = pattern -> Pattern.compile
+                    ("(?i)" + pattern).matcher(path.toFile().getName()).find();
+            switch (SEARCH_TYPE) {
+                case "name", "mask" -> {
+                    return validType.test("^" + EXPRESSION + "$");
+                }
+                case "regex" -> {
+                    return validType.test(EXPRESSION);
+                }
+                default -> {
+                    throwException("Invalid search type!");
+                    return false;
+                }
+            }
+        };
+        final FileVisitor visitor = new FileVisitor(validate);
         Files.walkFileTree(ROOT, visitor);
         return visitor.getResultList();
     }
@@ -71,12 +91,13 @@ public class SearchFilesWithArgs {
         final List<Path> pathList = search();
         if (pathList.isEmpty()) {
             System.out.println("Files not found!");
-        }
-        try (FileWriter fileWriter = new FileWriter(OUTPUT)) {
-            for (Path path : pathList) {
-                System.out.println(path);
-                fileWriter.write(path + System.lineSeparator());
+        } else {
+            try (FileWriter fileWriter = new FileWriter(OUTPUT_FILE)) {
+                for (Path path : pathList) {
+                    fileWriter.write(path + System.lineSeparator());
+                }
             }
+            Desktop.getDesktop().open(OUTPUT_FILE); // Вывод файла на монитор.
         }
     }
 }
