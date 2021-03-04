@@ -34,9 +34,11 @@ public class AnalyzeTest {
             out.println("500 11:01:02");
             out.println("200 11:02:02");
         }
-        new Analyze().unavailable(source.getAbsolutePath(), target.getAbsolutePath());
+        new Analyze().unavailable(source.getAbsolutePath(),
+                target.getAbsolutePath());
         final List<String> targetList;
-        try (BufferedReader read = new BufferedReader(new FileReader(target))) {
+        try (BufferedReader read =
+                     new BufferedReader(new FileReader(target))) {
             targetList = read.lines().collect(Collectors.toList());
         }
         Assert.assertThat(targetList, is(

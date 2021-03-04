@@ -11,10 +11,12 @@ public class EvenNumberFile {
             while ((read = in.read()) != -1) {
                 text.append((char) read);
             }
-            final String[] lines = text.toString().split(System.lineSeparator());
+            final String[] lines = text.toString()
+                    .split(System.lineSeparator());
             for (String line : lines) {
                 System.out.println(line + " - "
-                        + ((Integer.parseInt(line) % 2 == 0) ? "even" : "uneven"));
+                        + ((Integer.parseInt(line) % 2 == 0)
+                        ? "even" : "uneven"));
             }
         } catch (Exception e) {
             e.printStackTrace();

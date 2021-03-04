@@ -16,11 +16,12 @@ public class Search {
         }
         search(start, args[1]).forEach(System.out::println);
         final Path root = Paths.get("C:\\Users\\EEA\\Downloads");
-        searchDuplicates(root, new SearchDuplicates()).forEach(System.out::println);
+        searchDuplicates(root, new SearchDuplicates())
+                .forEach(System.out::println);
     }
 
-    private static List<File>
-    searchDuplicates(Path root, SearchDuplicates duplicates) throws IOException {
+    private static List<File> searchDuplicates(
+            Path root, SearchDuplicates duplicates) throws IOException {
         Files.walkFileTree(root, duplicates);
         return duplicates.getDuplicates();
     }

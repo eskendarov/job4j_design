@@ -15,16 +15,18 @@ public class Zip {
             throw new IllegalArgumentException();
         }
         final Path root = Path.of(zip.dir());
-        try (final FileOutputStream fos = new FileOutputStream(new File(zip.out()));
-             final ZipOutputStream zipOut = new ZipOutputStream(fos)
+        try (FileOutputStream fos = new FileOutputStream(zip.out());
+             ZipOutputStream zipOut = new ZipOutputStream(fos)
         ) {
             Files.walk(root)
                     .filter(path -> !path.toFile().isDirectory())
-                    .filter(path -> !path.toFile().getName().endsWith(zip.exc()))
+                    .filter(path -> !path.toFile().getName()
+                            .endsWith(zip.exc()))
                     .forEach(path -> {
                         try {
                             zipOut.putNextEntry(
-                                    new ZipEntry(root.relativize(path).toString())
+                                    new ZipEntry(root.relativize(path)
+                                            .toString())
                             );
                             Files.copy(path, zipOut);
                         } catch (IOException e) {
@@ -35,8 +37,8 @@ public class Zip {
     }
 
     public void packSingleFile(File source, File target) {
-        try (final FileOutputStream fos = new FileOutputStream(target);
-             final ZipOutputStream zip = new ZipOutputStream(fos)
+        try (FileOutputStream fos = new FileOutputStream(target);
+             ZipOutputStream zip = new ZipOutputStream(fos)
         ) {
             zip.putNextEntry(new ZipEntry(source.getName()));
             Files.copy(Path.of(source.toURI()), zip);

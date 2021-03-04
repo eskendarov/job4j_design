@@ -92,7 +92,7 @@
                             </includeTestSourceDirectory>
                         </configuration>
                         <goals>
-                            <goal>checkstyle</goal>
+                            <goal>check</goal>
                         </goals>
                     </execution>
                 </executions>

@@ -1,6 +1,6 @@
 package ru.job4j.io.exam;
 
-import java.awt.*;
+import java.awt.Desktop;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -20,7 +20,8 @@ import java.util.stream.Stream;
  * java -jar find.jar -d=c:/ -n=*.txt -t=mask -o=log.txt
  * -d - директория, с которой начинается поиск, включая поддиректории;
  * -n - имя файла, маска, либо регулярное выражение;
- * -t - тип поиска: mask искать по маске, name по полному совпадение имени, regex по регулярному выражению;
+ * -t - тип поиска: mask искать по маске, name по полному совпадение имени,
+ * regex по регулярному выражению;
  * -o - имя файла, в который запишется результат.
  * (!) Аргументы с пробелами  необходимо заключить в кавычки ("some file.txt"),
  * чтобы интерпретировать как один аргумент.
@@ -29,10 +30,10 @@ import java.util.stream.Stream;
  */
 public class SearchFilesWithArgs {
 
-    private static Path ROOT;
-    private static String EXPRESSION;
-    private static String SEARCH_TYPE;
-    private static File OUTPUT_FILE;
+    private static Path root;
+    private static String expression;
+    private static String searchType;
+    private static File outputFile;
     private final static String MESSAGE = String.format(
             " Please input valid args, for example: %s (%s)",
             "-d=c:\\-n=*.txt -t=mask -o=log.txt",
@@ -46,37 +47,38 @@ public class SearchFilesWithArgs {
                         key -> key.split("=")[0],
                         value -> value.split("=")[1]));
         if (map.size() == 4) {
-            ROOT = Paths.get(map.get("-d"));
-            EXPRESSION = map.get("-n");
-            SEARCH_TYPE = map.get("-t");
-            OUTPUT_FILE = new File(map.get("-o"));
+            root = Paths.get(map.get("-d"));
+            expression = map.get("-n");
+            searchType = map.get("-t");
+            outputFile = new File(map.get("-o"));
             return true;
         }
         return false;
     }
 
-    private static List<Path> search() throws IOException {
-        if (!Files.exists(ROOT)) {
-            throwException(ROOT + " - Invalid search directory.");
+    private static boolean check(Path path) throws IllegalStateException {
+        final Predicate<String> validType = pattern -> Pattern.compile
+                ("(?i)" + pattern).matcher(path.toFile().getName()).find();
+        if ("name".equals(searchType) || "mask".equals(searchType)) {
+            return validType.test("^" + expression + "$");
+        } else if ("regex".equals(searchType)) {
+            return validType.test(expression);
         }
-        final Predicate<Path> validate = path -> {
-            final Predicate<String> validType = pattern -> Pattern.compile
-                    ("(?i)" + pattern).matcher(path.toFile().getName()).find();
-            switch (SEARCH_TYPE) {
-                case "name", "mask" -> {
-                    return validType.test("^" + EXPRESSION + "$");
-                }
-                case "regex" -> {
-                    return validType.test(EXPRESSION);
-                }
-                default -> {
-                    throwException("Invalid search type!");
-                    return false;
-                }
+        throwException("Invalid search type!");
+        return false;
+    }
+
+    private static List<Path> search() throws IOException {
+        if (!Files.exists(root)) {
+            throwException(root + " - Invalid search directory.");
+        }
+        final FileVisitor visitor = new FileVisitor(new Predicate<Path>() {
+            @Override
+            public boolean test(Path path) {
+                return check(path);
             }
-        };
-        final FileVisitor visitor = new FileVisitor(validate);
-        Files.walkFileTree(ROOT, visitor);
+        });
+        Files.walkFileTree(root, visitor);
         return visitor.getResultList();
     }
 
@@ -92,12 +94,12 @@ public class SearchFilesWithArgs {
         if (pathList.isEmpty()) {
             System.out.println("Files not found!");
         } else {
-            try (FileWriter fileWriter = new FileWriter(OUTPUT_FILE)) {
+            try (FileWriter fileWriter = new FileWriter(outputFile)) {
                 for (Path path : pathList) {
                     fileWriter.write(path + System.lineSeparator());
                 }
             }
-            Desktop.getDesktop().open(OUTPUT_FILE); // Вывод файла на монитор.
+            Desktop.getDesktop().open(outputFile); // Вывод файла на монитор.
         }
     }
 }

@@ -23,7 +23,8 @@ public class SearchDuplicates implements FileVisitor<Path> {
     }
 
     @Override
-    public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) {
+    public FileVisitResult preVisitDirectory(
+            Path dir, BasicFileAttributes attrs) {
         return CONTINUE;
     }
 

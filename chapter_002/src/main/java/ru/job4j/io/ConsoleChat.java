@@ -15,9 +15,6 @@ public class ConsoleChat {
 
     private final String logPath;
     private final String botAnswers;
-    private final String OUT = "закончить";
-    private final String STOP = "стоп";
-    private final String CONTINUE = "продолжить";
     private boolean isStopped = false;
 
     public ConsoleChat(String logPath, String botAnswers) {
@@ -27,7 +24,8 @@ public class ConsoleChat {
 
     private List<String> getAnswers() {
         final List<String> rsl = new ArrayList<>();
-        try (BufferedReader in = new BufferedReader(new FileReader(botAnswers))) {
+        try (BufferedReader in =
+                     new BufferedReader(new FileReader(botAnswers))) {
             String line = in.readLine();
             while (line != null) {
                 rsl.add(line);
@@ -53,10 +51,10 @@ public class ConsoleChat {
     }
 
     private void chatStatus(String userCommand) {
-        if (userCommand.equals(STOP)) {
+        if (userCommand.equals("стоп")) {
             isStopped = true;
         }
-        if (userCommand.equals(CONTINUE)) {
+        if (userCommand.equals("продолжить")) {
             isStopped = false;
         }
     }
@@ -67,7 +65,7 @@ public class ConsoleChat {
         final List<String> logsList = new ArrayList<>();
         final Scanner scanner = new Scanner(System.in);
         String userCommand = scanner.nextLine();
-        while (!userCommand.equals(OUT)) {
+        while (!userCommand.equals("закончить")) {
             logsList.add("User: " + userCommand);
             final String botAnswer
                     = botAnswers.get(random.nextInt(botAnswers.size()));

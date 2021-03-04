@@ -27,7 +27,8 @@ public class XmlToPojoTest {
         account = new Account(true, 23, "Kot",
                 new Contact(55, "734552"),
                 new String[]{"cbb43", "f34f3", "23d4", "2d23", "d3d45"});
-        Marshaller marshal = JAXBContext.newInstance(Account.class).createMarshaller();
+        Marshaller marshal = JAXBContext.newInstance(Account.class)
+                .createMarshaller();
         marshal.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
         marshal.marshal(account, file);
 
@@ -35,7 +36,8 @@ public class XmlToPojoTest {
 
     @Test
     public void whenAccountEquals() throws JAXBException {
-        unmarshal = JAXBContext.newInstance(Account.class).createUnmarshaller();
+        unmarshal = JAXBContext.newInstance(Account.class)
+                .createUnmarshaller();
         final Account expected = (Account) unmarshal.unmarshal(file);
         Assert.assertThat(expected, is(account));
     }
