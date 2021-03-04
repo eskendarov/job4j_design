@@ -9,7 +9,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -56,13 +55,16 @@ public class SearchFilesWithArgs {
         return false;
     }
 
-    private static boolean check(Path path) throws IllegalStateException {
-        final Predicate<String> validType = pattern -> Pattern.compile
-                ("(?i)" + pattern).matcher(path.toFile().getName()).find();
-        if ("name".equals(searchType) || "mask".equals(searchType)) {
-            return validType.test("^" + expression + "$");
+    private static boolean test(String expression, String file) {
+        return Pattern.compile("(?i)" + expression).matcher(file).find();
+    }
+
+    private static boolean check(Path path) {
+        final String file = path.toFile().getName();
+        if (List.of("name", "mask").contains(searchType)) {
+            return test("^" + expression + "$", file);
         } else if ("regex".equals(searchType)) {
-            return validType.test(expression);
+            return test(expression, file);
         }
         throwException("Invalid search type!");
         return false;
@@ -72,11 +74,13 @@ public class SearchFilesWithArgs {
         if (!Files.exists(root)) {
             throwException(root + " - Invalid search directory.");
         }
-        final FileVisitor visitor = new FileVisitor(new Predicate<Path>() {
-            @Override
-            public boolean test(Path path) {
+        final FileVisitor visitor = new FileVisitor(path -> {
+            try {
                 return check(path);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
+            return false;
         });
         Files.walkFileTree(root, visitor);
         return visitor.getResultList();
