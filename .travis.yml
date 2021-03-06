@@ -17,8 +17,8 @@ notifications:
     recipients:
       -envereskendarov@gmail.com
     on_success: never # default: change
-    on_failure: always # defa,ult: always
+    on_failure: always # default: always
 
 env:
   global:
-    - CODECOV_TOKEN="f19ba724-2fd0-4ea5-89c1-b2b29170edb0"
+    - CODECOV_TOKEN='f19ba724-2fd0-4ea5-89c1-b2b29170edb0'
