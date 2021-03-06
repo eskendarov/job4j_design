@@ -10,7 +10,7 @@ public class ConfigTest {
 
     @Test
     public void whenPairWithoutValue() {
-        final String path = "..\\data\\app.properties";
+        final String path = "../data/app.properties";
         final Config config = new Config(path);
         config.load();
         assertThat(config.value("name"), is(nullValue()));
@@ -18,7 +18,7 @@ public class ConfigTest {
 
     @Test
     public void whenPairWithValue() {
-        final String path = "..\\data\\app.properties";
+        final String path = "../data/app.properties";
         final Config config = new Config(path);
         config.load();
         assertThat(
