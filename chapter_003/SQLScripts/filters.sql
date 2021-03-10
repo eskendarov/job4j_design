@@ -57,7 +57,8 @@ where name like '%Мороженное%';
 -- выводит продукты, срок годности которых заканчивается в следующем месяце
 select p.name, p.expired_date, p.price
 from product as p
-where p.expired_date > current_date + interval '1month';
+where p.expired_date between current_date
+          and current_date + interval '1month';
 
 -- выводит самый дорогой продукт
 select p.name, p.price
