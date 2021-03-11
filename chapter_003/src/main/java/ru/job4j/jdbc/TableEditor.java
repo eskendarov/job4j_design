@@ -1,13 +1,11 @@
 package ru.job4j.jdbc;
 
-import java.io.FileReader;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Properties;
+import java.util.ResourceBundle;
 
 /**
  * TableEditor class handles SQL queries for tables
@@ -20,19 +18,19 @@ public class TableEditor implements AutoCloseable {
     private static Connection connection;
 
     /**
-     * @param propertiesPath - Путь к файлу настроек PostgreSQL
+     * @param baseName - Имя файла настроек PostgreSQL
      */
-    public TableEditor(String propertiesPath) {
-        try (FileReader reader = new FileReader(propertiesPath)) {
-            final Properties properties = new Properties();
-            properties.load(reader);
-            Class.forName(properties.getProperty("postgresql.driver.class"));
+    public TableEditor(String baseName) {
+        /* ResourceBundle принимает имя файла без расширения '.properties' */
+        final ResourceBundle res = ResourceBundle.getBundle(baseName);
+        try {
+            Class.forName(res.getString("postgresql.driver.class"));
             connection = DriverManager.getConnection(
-                    properties.getProperty("postgresql.connection.url"),
-                    properties.getProperty("postgresql.username"),
-                    properties.getProperty("postgresql.password")
+                    res.getString("postgresql.connection.url"),
+                    res.getString("postgresql.username"),
+                    res.getString("postgresql.password")
             );
-        } catch (SQLException | ClassNotFoundException | IOException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
@@ -98,7 +96,7 @@ public class TableEditor implements AutoCloseable {
     }
 
     public static void main(String[] args) {
-        final TableEditor sqlQuery = new TableEditor("application.properties");
+        final TableEditor sqlQuery = new TableEditor("application");
         final String table = "demo_table";
         sqlQuery.createTable(table);
         sqlQuery.dropTable(table);

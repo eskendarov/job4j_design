@@ -1,12 +1,10 @@
 package ru.job4j.jdbc;
 
-import java.io.FileReader;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Properties;
+import java.util.ResourceBundle;
 
 /**
  * Database connection class
@@ -16,23 +14,20 @@ import java.util.Properties;
  */
 public class ConnectionDemo {
 
-    public static void main(String[] args) {
-        try (FileReader reader = new FileReader("application.properties")) {
-            final Properties p = new Properties();
-            p.load(reader);
-            /* Register jdbc driver class. */
-            Class.forName(p.getProperty("postgresql.driver.class"));
-            try (Connection connection = DriverManager.getConnection(
-                    p.getProperty("postgresql.connection.url"),
-                    p.getProperty("postgresql.username"),
-                    p.getProperty("postgresql.password"))
-            ) {
-                final DatabaseMetaData metaData = connection.getMetaData();
-                System.out.println(metaData.getURL());
-                System.out.println(metaData.getUserName());
-            }
-        } catch (IOException | ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
+    public static void main(String[] args)
+            throws ClassNotFoundException, SQLException {
+        /* ResourceBundle accepts filename without extension '.properties' */
+        final ResourceBundle res = ResourceBundle.getBundle("application");
+        /* Register jdbc driver class. */
+        try (Connection connection = DriverManager.getConnection(
+                res.getString("postgresql.connection.url"),
+                res.getString("postgresql.username"),
+                res.getString("postgresql.password"))
+        ) {
+            Class.forName(res.getString("postgresql.driver.class"));
+            final DatabaseMetaData metaData = connection.getMetaData();
+            System.out.println(metaData.getURL());
+            System.out.println(metaData.getUserName());
         }
     }
 }
