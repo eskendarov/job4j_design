@@ -61,15 +61,18 @@ from car c
 
 -- 2. Вывести отдельно детали (1 деталь - 1 запрос),
 --  которые не используются в машине: кузова, двигатели, коробки передач.
-select b.name body,
-       e.name engine,
-       g.name gearbox
+select b.name body
 from body b
-         left join car c1 on b.car_id = c1.id,
-     engine e
-         left join car c2 on e.car_id = c2.id,
-     gearbox g
+         left join car c1 on b.car_id = c1.id
+where b.car_id is null;
+
+select e.name engine
+from engine e
+         left join car c2 on e.car_id = c2.id
+where e.car_id is null;
+
+select g.name gearbox
+from gearbox g
          left join car c3 on g.car_id = c3.id
-where b.car_id is null
-  and e.car_id is null
-  and g.car_id is null;
+where g.car_id is null;
+
