@@ -16,20 +16,23 @@ import java.util.Properties;
  */
 public class ConnectionDemo {
 
-    public static void main(String[] args)
-            throws ClassNotFoundException, SQLException, IOException {
-        final Properties p = new Properties();
-        p.load(new FileReader("application.properties"));
-        /* Register jdbc driver class. */
-        Class.forName(p.getProperty("postgresql.driver.class"));
-        try (Connection connection = DriverManager.getConnection(
-                p.getProperty("postgresql.connection.url"),
-                p.getProperty("postgresql.username"),
-                p.getProperty("postgresql.password"))
-        ) {
-            final DatabaseMetaData metaData = connection.getMetaData();
-            System.out.println(metaData.getURL());
-            System.out.println(metaData.getUserName());
+    public static void main(String[] args) {
+        try (FileReader reader = new FileReader("application.properties")) {
+            final Properties p = new Properties();
+            p.load(reader);
+            /* Register jdbc driver class. */
+            Class.forName(p.getProperty("postgresql.driver.class"));
+            try (Connection connection = DriverManager.getConnection(
+                    p.getProperty("postgresql.connection.url"),
+                    p.getProperty("postgresql.username"),
+                    p.getProperty("postgresql.password"))
+            ) {
+                final DatabaseMetaData metaData = connection.getMetaData();
+                System.out.println(metaData.getURL());
+                System.out.println(metaData.getUserName());
+            }
+        } catch (IOException | ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
         }
     }
 }
