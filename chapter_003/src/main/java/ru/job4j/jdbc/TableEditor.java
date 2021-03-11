@@ -23,9 +23,9 @@ public class TableEditor implements AutoCloseable {
      * @param propertiesPath - Путь к файлу настроек PostgreSQL
      */
     public TableEditor(String propertiesPath) {
-        try {
+        try (FileReader reader = new FileReader(propertiesPath)) {
             final Properties properties = new Properties();
-            properties.load(new FileReader(propertiesPath));
+            properties.load(reader);
             Class.forName(properties.getProperty("postgresql.driver.class"));
             connection = DriverManager.getConnection(
                     properties.getProperty("postgresql.connection.url"),
