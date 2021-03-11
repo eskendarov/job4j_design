@@ -28,9 +28,9 @@ public class PrepareStatementDemo implements AutoCloseable {
     }
 
     public void initConnection() {
-        try {
+        try (FileReader reader = new FileReader("application.properties")) {
             final Properties p = new Properties();
-            p.load(new FileReader("application.properties"));
+            p.load(reader);
             Class.forName(p.getProperty("postgresql.driver.class"));
             connection = DriverManager.getConnection(
                     p.getProperty("postgresql.connection.url"),
