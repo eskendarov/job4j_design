@@ -1,7 +1,5 @@
 package ru.job4j.jdbc;
 
-import java.io.FileReader;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -10,7 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
+import java.util.ResourceBundle;
 
 /**
  * PrepareStatementDemo class executes DML operations:
@@ -28,16 +26,15 @@ public class PrepareStatementDemo implements AutoCloseable {
     }
 
     public void initConnection() {
-        try (FileReader reader = new FileReader("application.properties")) {
-            final Properties p = new Properties();
-            p.load(reader);
-            Class.forName(p.getProperty("postgresql.driver.class"));
+        final ResourceBundle res = ResourceBundle.getBundle("application");
+        try {
+            Class.forName(res.getString("postgresql.driver.class"));
             connection = DriverManager.getConnection(
-                    p.getProperty("postgresql.connection.url"),
-                    p.getProperty("postgresql.username"),
-                    p.getProperty("postgresql.password")
+                    res.getString("postgresql.connection.url"),
+                    res.getString("postgresql.username"),
+                    res.getString("postgresql.password")
             );
-        } catch (IOException | SQLException | ClassNotFoundException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
