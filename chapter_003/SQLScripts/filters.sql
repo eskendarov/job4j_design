@@ -58,7 +58,7 @@ where name like '%Мороженное%';
 select p.name, p.expired_date, p.price
 from product as p
 where (select date_part('month', expired_date)) =
-      (select date_part('month', current_date + interval '1month'));
+      (select date_part('month', current_date) + 1);
 
 -- выводит самый дорогой продукт
 select p.name, p.price
