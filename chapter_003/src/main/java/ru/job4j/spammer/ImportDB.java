@@ -30,7 +30,8 @@ public class ImportDB {
     public List<User> load() {
         final List<User> users = new ArrayList<>();
         try (BufferedReader rd = new BufferedReader(new FileReader(dump))) {
-            rd.lines().map(s -> s.split(";", 3)) // line pattern: "name;email;"
+            rd.lines().map(s -> s.split(";")) // line pattern: "name;email;"
+                    .filter(array -> array.length == 2)
                     .forEach(data -> users.add(new User(data[0], data[1])));
         } catch (IOException e) {
             e.printStackTrace();
