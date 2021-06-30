@@ -44,9 +44,6 @@ SELECT c.name company, count(p.name) person_count
 FROM company c
          join person p on c.id = p.company_id
 GROUP BY c.name
-HAVING count(p.name) = (SELECT count(company_id) cp
-                        FROM person
-                        GROUP BY company_id
-                        ORDER BY cp DESC
-                        LIMIT 1
-);
+ORDER BY person_count DESC
+LIMIT 1;
+
