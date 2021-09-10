@@ -29,7 +29,7 @@ public class EchoServer {
                     in.lines().takeWhile(line -> !line.isEmpty())
                             .forEach(line -> {
                                 System.out.println(line);
-                                if (line.contains("GET /?msg")) {
+                                if (line.contains("GET/?msg")) {
                                     msg.append(line, line.indexOf("=") + 1,
                                             line.lastIndexOf(" "));
                                 }
