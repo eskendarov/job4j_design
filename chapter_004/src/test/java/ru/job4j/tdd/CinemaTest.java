@@ -13,6 +13,7 @@ import ru.job4j.tdd.src.Ticket;
 import java.util.Calendar;
 import java.util.Collections;
 
+import static java.util.Calendar.HOUR;
 import static java.util.Calendar.NOVEMBER;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
@@ -35,7 +36,6 @@ public class CinemaTest {
         assertThat(ticket, is(cinema.buy(account, 1, 1, date)));
     }
 
-
     @Test
     public void ticketsNotFound() {
         cinema.add(session);
@@ -55,5 +55,19 @@ public class CinemaTest {
     @Test
     public void sessionNotFound() {
         assertEquals(Collections.emptyList(), cinema.find(session3D -> false));
+    }
+
+    @Ignore
+    @Test(expected = IllegalArgumentException.class)
+    public void placeIsBusy() {
+        date.set(2021, NOVEMBER, 29, 12, 0);
+        cinema.buy(account, -1, -1, date);
+    }
+
+    @Ignore
+    @Test(expected = IllegalArgumentException.class)
+    public void timeIsPassed() {
+        date.add(HOUR, -1);
+        cinema.buy(account, 1, 1, date);
     }
 }
