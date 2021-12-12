@@ -51,11 +51,9 @@ public class CSVReader {
     public void read() throws IOException {
         final Scanner scanFile = new Scanner(path)
                 .useDelimiter(System.lineSeparator());
-        // Считываем имена столбцов, для разделения и индексации
         final String[] colNames = scanFile.next().split(delimiter);
         final int[] index = IntStream.range(0, colNames.length)
                 .filter(i -> filter.contains(colNames[i])).toArray();
-        // Считываем строки по фильтрам и записываем в буфер
         while (scanFile.hasNextLine()) {
             final String[] columns = scanFile.next().split(delimiter);
             for (int i = 0; i < index.length; i++) {
@@ -81,7 +79,6 @@ public class CSVReader {
     public static void main(String[] args) throws IOException {
         final ArgsName argsName = ArgsName.of(args);
         final Path path = Path.of(argsName.get("path"));
-        // Проверяем аргументы (5) и читаемость файла.
         if (args.length != 4 || !path.toFile().isFile()) {
             throw new IllegalArgumentException("Invalid path: " + path);
         }

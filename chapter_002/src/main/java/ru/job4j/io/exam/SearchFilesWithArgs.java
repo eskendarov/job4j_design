@@ -1,12 +1,8 @@
 package ru.job4j.io.exam;
 
 import java.awt.Desktop;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.*;
+import java.nio.file.*;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -103,7 +99,7 @@ public class SearchFilesWithArgs {
                     fileWriter.write(path + System.lineSeparator());
                 }
             }
-            Desktop.getDesktop().open(outputFile); // Вывод файла на монитор.
+            Desktop.getDesktop().open(outputFile);
         }
     }
 }
