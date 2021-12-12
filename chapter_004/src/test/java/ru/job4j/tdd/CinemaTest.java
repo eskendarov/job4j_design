@@ -2,13 +2,7 @@ package ru.job4j.tdd;
 
 import org.junit.Ignore;
 import org.junit.Test;
-import ru.job4j.tdd.src.Account;
-import ru.job4j.tdd.src.AccountCinema;
-import ru.job4j.tdd.src.Cinema;
-import ru.job4j.tdd.src.Cinema3D;
-import ru.job4j.tdd.src.Session;
-import ru.job4j.tdd.src.Session3D;
-import ru.job4j.tdd.src.Ticket;
+import ru.job4j.tdd.src.*;
 
 import java.util.Calendar;
 import java.util.Collections;
@@ -16,9 +10,7 @@ import java.util.Collections;
 import static java.util.Calendar.HOUR;
 import static java.util.Calendar.NOVEMBER;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.*;
 
 public class CinemaTest {
 
@@ -60,6 +52,14 @@ public class CinemaTest {
     @Ignore
     @Test(expected = IllegalArgumentException.class)
     public void placeIsBusy() {
+        date.set(2021, NOVEMBER, 29, 12, 0);
+        cinema.buy(account, 4, 3, date);
+        cinema.buy(account, 4, 3, date);
+    }
+
+    @Ignore
+    @Test(expected = IllegalArgumentException.class)
+    public void placeIsNotValid() {
         date.set(2021, NOVEMBER, 29, 12, 0);
         cinema.buy(account, -1, -1, date);
     }
