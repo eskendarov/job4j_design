@@ -21,7 +21,7 @@ public class CinemaTest {
     private Ticket ticket = null;
 
     @Test
-    public void byuSuccess() {
+    public void whenByeTicketThenSuccess() {
         date.set(2020, NOVEMBER, 10, 23, 0);
         cinema.add(session);
         ticket = cinema.buy(account, 1, 1, date);
@@ -29,7 +29,7 @@ public class CinemaTest {
     }
 
     @Test
-    public void ticketsNotFound() {
+    public void whenTicketNotFoundThenAssertNull() {
         cinema.add(session);
         date.set(2021, NOVEMBER, 21, 12, 45);
         ticket = cinema.buy(account, 0, 0, date);
@@ -38,20 +38,20 @@ public class CinemaTest {
 
     @Ignore
     @Test
-    public void addSessionAndFound() {
+    public void whenAddSessionThenFoundIt() {
         cinema.add(session);
         assertEquals(Collections.singletonList(session), cinema.find(session1 -> true));
     }
 
     @Ignore
     @Test
-    public void sessionNotFound() {
+    public void whenSessionNotFoundThenResultIsEmpty() {
         assertEquals(Collections.emptyList(), cinema.find(session3D -> false));
     }
 
     @Ignore
     @Test(expected = IllegalArgumentException.class)
-    public void placeIsBusy() {
+    public void whenPlaceIsBusyThenThrowException() {
         date.set(2021, NOVEMBER, 29, 12, 0);
         cinema.buy(account, 4, 3, date);
         cinema.buy(account, 4, 3, date);
@@ -59,14 +59,14 @@ public class CinemaTest {
 
     @Ignore
     @Test(expected = IllegalArgumentException.class)
-    public void placeIsNotValid() {
+    public void whenPlaceIsNotValidThenThrowException() {
         date.set(2021, NOVEMBER, 29, 12, 0);
         cinema.buy(account, -1, -1, date);
     }
 
     @Ignore
     @Test(expected = IllegalArgumentException.class)
-    public void timeIsPassed() {
+    public void whenTimeIsPassedThenThrowException() {
         date.add(HOUR, -1);
         cinema.buy(account, 1, 1, date);
     }
